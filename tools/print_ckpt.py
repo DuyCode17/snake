@@ -14,8 +14,8 @@ parser.add_argument("-n", metavar="tensor_name", default="",
                          "or print all tensors if not provided.")
 args = parser.parse_args()
 
-file_name = os.path.join("logs", "solver-net-{}".format(args.global_step))
+file_name = os.path.join("logs", f"solver-net-{args.global_step}")
 tensor_name = args.n
-all_tensors = True if args.n == "" else False
+all_tensors = args.n == ""
 
 chkp.print_tensors_in_checkpoint_file(file_name, tensor_name=tensor_name, all_tensors=all_tensors)

@@ -39,9 +39,7 @@ class Pos:
         return NotImplemented
 
     def __sub__(self, other):
-        if isinstance(self, other.__class__):
-            return self + (-other)
-        return NotImplemented
+        return self + (-other) if isinstance(self, other.__class__) else NotImplemented
 
     def __hash__(self):
         return hash((self.x, self.y))
@@ -81,11 +79,7 @@ class Pos:
 
     def all_adj(self):
         """Return a list of all the adjacent Pos."""
-        adjs = []
-        for direc in Direc:
-            if direc != Direc.NONE:
-                adjs.append(self.adj(direc))
-        return adjs
+        return [self.adj(direc) for direc in Direc if direc != Direc.NONE]
 
     @property
     def x(self):

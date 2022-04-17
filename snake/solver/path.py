@@ -128,9 +128,9 @@ class PathSolver(BaseSolver):
             cur_direc = path[idx]
             nxt = cur.adj(cur_direc)
 
-            if cur_direc == Direc.LEFT or cur_direc == Direc.RIGHT:
+            if cur_direc in [Direc.LEFT, Direc.RIGHT]:
                 tests = [Direc.UP, Direc.DOWN]
-            elif cur_direc == Direc.UP or cur_direc == Direc.DOWN:
+            elif cur_direc in [Direc.UP, Direc.DOWN]:
                 tests = [Direc.LEFT, Direc.RIGHT]
 
             extended = False

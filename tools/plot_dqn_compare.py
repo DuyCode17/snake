@@ -77,11 +77,12 @@ def make_bar(x, heights, side, color):
     return bars
 
 legends = [
-    "%s+%s" % (LABELS["global"], LABELS["absolute"]),
-    "%s+%s" % (LABELS["global"], LABELS["relative"]),
-    "%s+%s+%s" % (LABELS["global"], LABELS["local"], LABELS["absolute"]),
-    "%s+%s+%s" % (LABELS["global"], LABELS["local"], LABELS["relative"]),
+    f'{LABELS["global"]}+{LABELS["absolute"]}',
+    f'{LABELS["global"]}+{LABELS["relative"]}',
+    f'{LABELS["global"]}+{LABELS["local"]}+{LABELS["absolute"]}',
+    f'{LABELS["global"]}+{LABELS["local"]}+{LABELS["relative"]}',
 ]
+
 
 plt.figure()
 max_len = \
