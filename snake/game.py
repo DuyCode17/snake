@@ -249,8 +249,12 @@ class Game:
                     self._log_file.write("# ")
                 elif t == PointType.FOOD:
                     self._log_file.write("F ")
-                elif t == PointType.HEAD_L or t == PointType.HEAD_U or \
-                    t == PointType.HEAD_R or t == PointType.HEAD_D:
+                elif t in [
+                    PointType.HEAD_L,
+                    PointType.HEAD_U,
+                    PointType.HEAD_R,
+                    PointType.HEAD_D,
+                ]:
                     self._log_file.write("H ")
                 elif pos == self._snake.tail():
                     self._log_file.write("T ")

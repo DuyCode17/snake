@@ -45,15 +45,14 @@ class HamiltonSolver(BaseSolver):
 
         # Take shorcuts when the snake is not too long
         if self._shortcuts and self.snake.len() < 0.5 * self.map.capacity:
-            path = self._path_solver.shortest_path_to_food()
-            if path:
+            if path := self._path_solver.shortest_path_to_food():
                 tail, nxt, food = self.snake.tail(), head.adj(path[0]), self.map.food
                 tail_idx = self._table[tail.x][tail.y].idx
                 head_idx = self._table[head.x][head.y].idx
                 nxt_idx = self._table[nxt.x][nxt.y].idx
                 food_idx = self._table[food.x][food.y].idx
                 # Exclude one exception
-                if not (len(path) == 1 and abs(food_idx - tail_idx) == 1):
+                if len(path) != 1 or abs(food_idx - tail_idx) != 1:
                     head_idx_rel = self._relative_dist(tail_idx, head_idx, self.map.capacity)
                     nxt_idx_rel = self._relative_dist(tail_idx, nxt_idx, self.map.capacity)
                     food_idx_rel = self._relative_dist(tail_idx, food_idx, self.map.capacity)

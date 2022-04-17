@@ -29,6 +29,6 @@ args = parser.parse_args()
 conf = GameConf()
 conf.solver_name = dict_solver[args.s]
 conf.mode = dict_mode[args.m]
-print("Solver: %s    Mode: %s" % (conf.solver_name, conf.mode))
+print(f"Solver: {conf.solver_name}    Mode: {conf.mode}")
 
 Game(conf).run()

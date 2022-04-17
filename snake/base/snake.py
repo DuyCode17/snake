@@ -51,9 +51,9 @@ class Snake:
                 self._init_types.append(PointType.HEAD_R)
             elif self._init_direc == Direc.DOWN:
                 self._init_types.append(PointType.HEAD_D)
-            if self._init_direc == Direc.LEFT or self._init_direc == Direc.RIGHT:
+            if self._init_direc in [Direc.LEFT, Direc.RIGHT]:
                 self._init_types.append(PointType.BODY_HOR)
-            elif self._init_direc == Direc.UP or self._init_direc == Direc.DOWN:
+            elif self._init_direc in [Direc.UP, Direc.DOWN]:
                 self._init_types.append(PointType.BODY_VER)
 
         self._steps = 0
@@ -116,14 +116,10 @@ class Snake:
         return len(self._bodies)
 
     def head(self):
-        if not self._bodies:
-            return None
-        return self._bodies[0]
+        return self._bodies[0] if self._bodies else None
 
     def tail(self):
-        if not self._bodies:
-            return None
-        return self._bodies[-1]
+        return self._bodies[-1] if self._bodies else None
 
     def move_path(self, path):
         for p in path:

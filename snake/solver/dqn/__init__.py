@@ -417,34 +417,42 @@ class DQNSolver(BaseSolver):
                     visual_state[i - 1][j - 1][0] = 1
                 elif t == PointType.FOOD:
                     visual_state[i - 1][j - 1][1] = 1
-                elif t == PointType.HEAD_L or t == PointType.HEAD_U or \
-                     t == PointType.HEAD_R or t == PointType.HEAD_D:
+                elif t in [
+                    PointType.HEAD_L,
+                    PointType.HEAD_U,
+                    PointType.HEAD_R,
+                    PointType.HEAD_D,
+                ]:
                     visual_state[i - 1][j - 1][2] = 1
-                elif t == PointType.BODY_LU  or t == PointType.BODY_UR or \
-                     t == PointType.BODY_RD  or t == PointType.BODY_DL or \
-                     t == PointType.BODY_HOR or t == PointType.BODY_VER:
+                elif t in [
+                    PointType.BODY_LU,
+                    PointType.BODY_UR,
+                    PointType.BODY_RD,
+                    PointType.BODY_DL,
+                    PointType.BODY_HOR,
+                    PointType.BODY_VER,
+                ]:
                     visual_state[i - 1][j - 1][3] = 1
                 else:
-                    raise ValueError("Unsupported PointType: {}".format(t))
+                    raise ValueError(f"Unsupported PointType: {t}")
 
         if self._USE_VISUAL_ONLY:
             return visual_state.flatten()
+        # Important state
+        important_state = np.zeros(self._NUM_IMPORTANT_FEATURES, dtype=np.int32)
+        head = self.snake.head()
+
+        if self._USE_RELATIVE:
+            for i, action in enumerate([SnakeAction.LEFT, SnakeAction.FORWARD, SnakeAction.RIGHT]):
+                direc = SnakeAction.to_direc(action, self.snake.direc)
+                if not self.map.is_safe(head.adj(direc)):
+                    important_state[i] = 1
         else:
-            # Important state
-            important_state = np.zeros(self._NUM_IMPORTANT_FEATURES, dtype=np.int32)
-            head = self.snake.head()
+            for i, direc in enumerate([Direc.LEFT, Direc.UP, Direc.RIGHT, Direc.DOWN]):
+                if not self.map.is_safe(head.adj(direc)):
+                    important_state[i] = 1
 
-            if self._USE_RELATIVE:
-                for i, action in enumerate([SnakeAction.LEFT, SnakeAction.FORWARD, SnakeAction.RIGHT]):
-                    direc = SnakeAction.to_direc(action, self.snake.direc)
-                    if not self.map.is_safe(head.adj(direc)):
-                        important_state[i] = 1
-            else:
-                for i, direc in enumerate([Direc.LEFT, Direc.UP, Direc.RIGHT, Direc.DOWN]):
-                    if not self.map.is_safe(head.adj(direc)):
-                        important_state[i] = 1
-
-            return np.hstack((visual_state.flatten(), important_state))
+        return np.hstack((visual_state.flatten(), important_state))
 
     def _choose_action(self, e_greedy=True):
         action_idx = None

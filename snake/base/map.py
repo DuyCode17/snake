@@ -82,8 +82,10 @@ class Map:
         return self.is_inside(pos) and self.point(pos).type == PointType.EMPTY
 
     def is_safe(self, pos):
-        return self.is_inside(pos) and (self.point(pos).type == PointType.EMPTY or \
-                                        self.point(pos).type == PointType.FOOD)
+        return self.is_inside(pos) and self.point(pos).type in [
+            PointType.EMPTY,
+            PointType.FOOD,
+        ]
 
     def is_full(self):
         """Check if the map is filled with the snake's bodies."""
@@ -116,7 +118,4 @@ class Map:
                     empty_pos.append(Pos(i, j))
                 elif t == PointType.FOOD:
                     return None  # Stop if food exists
-        if empty_pos:
-            return self.create_food(random.choice(empty_pos))
-        else:
-            return None
+        return self.create_food(random.choice(empty_pos)) if empty_pos else None
